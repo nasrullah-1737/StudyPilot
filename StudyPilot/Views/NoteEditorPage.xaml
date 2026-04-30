@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyPilot.Views.NoteEditorPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:StudyPilot.ViewModels"
+    x:DataType="viewModels:NoteEditorViewModel">
+    <ScrollView VerticalScrollBarVisibility="Always">
+        <VerticalStackLayout Padding="16" Spacing="10">
+            <!-- PLACEHOLDER_IMAGE_NOTE_EDITOR_HEADER: add custom icon/illustration -->
+            <Image Source="note_editor_header_placeholder.png" HeightRequest="56" HorizontalOptions="Start" IsVisible="False" />
+            <Label Text="{Binding PageTitle}" Style="{StaticResource PageTitleLabel}" />
+
+            <Frame Style="{StaticResource AppCardStyle}">
+                <VerticalStackLayout Spacing="10">
+                    <Entry Placeholder="Note title" Text="{Binding NoteTitle}" />
+                    <Entry Placeholder="Subject" Text="{Binding Subject}" />
+                    <Editor Placeholder="Write your note..." Text="{Binding Content}" MinimumHeightRequest="140" />
+
+                    <Image Source="{Binding ImagePath}" HeightRequest="180" Aspect="AspectFill">
+                        <Image.Triggers>
+                            <DataTrigger TargetType="Image" Binding="{Binding ImagePath}" Value="{x:Null}">
+                                <Setter Property="IsVisible" Value="False" />
+                            </DataTrigger>
+                        </Image.Triggers>
+                    </Image>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                        <Button Text="Pick Image" Command="{Binding PickImageCommand}" />
+                        <Button Grid.Column="1" Text="Remove Image" Command="{Binding RemoveImageCommand}" Style="{StaticResource SecondaryButtonStyle}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="Save Note" Command="{Binding SaveCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

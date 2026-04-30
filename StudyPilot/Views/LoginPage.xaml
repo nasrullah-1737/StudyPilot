@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyPilot.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:StudyPilot.ViewModels"
+    x:DataType="viewModels:LoginViewModel"
+    Shell.NavBarIsVisible="False">
+    <ScrollView VerticalScrollBarVisibility="Always">
+        <VerticalStackLayout Padding="24,48" Spacing="16">
+            <!-- PLACEHOLDER_IMAGE_LOGIN_LOGO: set Source to your app logo/icon file -->
+            <Image Source="login_logo_placeholder.png" HeightRequest="72" HorizontalOptions="Center" IsVisible="False" />
+            <Label Text="StudyPilot" Style="{StaticResource PageTitleLabel}" HorizontalOptions="Center" />
+            <Label Text="Student Helper App" Style="{StaticResource BodyLabel}" HorizontalOptions="Center" />
+
+            <Frame Style="{StaticResource AppCardStyle}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Email" Style="{StaticResource BodyLabel}" FontAttributes="Bold"/>
+                    <Entry  Text="{Binding Email}" Keyboard="Email" />
+
+                    <Label Text="Password" Style="{StaticResource BodyLabel}" FontAttributes="Bold" />
+                    <Entry Text="{Binding Password}" IsPassword="True" />
+
+                    <Button Text="Login" Command="{Binding LoginCommand}" />
+                    <Button Text="Create Account" Command="{Binding OpenRegisterCommand}" Style="{StaticResource SecondaryButtonStyle}" />
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

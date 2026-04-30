@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyPilot.Views.TaskEditorPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:StudyPilot.ViewModels"
+    x:DataType="viewModels:TaskEditorViewModel">
+    <ScrollView VerticalScrollBarVisibility="Always">
+        <VerticalStackLayout Padding="16" Spacing="10">
+            <!-- PLACEHOLDER_IMAGE_TASK_EDITOR_HEADER: add custom icon/illustration -->
+            <Image Source="task_editor_header_placeholder.png" HeightRequest="56" HorizontalOptions="Start" IsVisible="False" />
+            <Label Text="{Binding PageTitle}" Style="{StaticResource PageTitleLabel}" />
+
+            <Frame Style="{StaticResource AppCardStyle}">
+                <VerticalStackLayout Spacing="10">
+                    <Entry Placeholder="Task title" Text="{Binding TaskTitle}" />
+                    <Editor Placeholder="Task description" Text="{Binding Description}" MinimumHeightRequest="120" />
+
+                    <Label Text="Deadline Date" Style="{StaticResource BodyLabel}" />
+                    <DatePicker Date="{Binding DeadlineDate}" />
+
+                    <Label Text="Deadline Time" Style="{StaticResource BodyLabel}" />
+                    <TimePicker Time="{Binding DeadlineTime}" />
+
+                    <Label Text="Priority" Style="{StaticResource BodyLabel}" />
+                    <Picker ItemsSource="{Binding Priorities}" SelectedItem="{Binding SelectedPriority}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="Save Task" Command="{Binding SaveCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

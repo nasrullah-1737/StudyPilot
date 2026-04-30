@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyPilot.Views.FilesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:StudyPilot.Models"
+    xmlns:viewModels="clr-namespace:StudyPilot.ViewModels"
+    x:Name="FilesPageRoot"
+    x:DataType="viewModels:FilesViewModel"
+    Title="Files">
+    <Grid Padding="16" RowDefinitions="Auto,*" RowSpacing="10">
+        <VerticalStackLayout Grid.Row="0" Spacing="10">
+            <!-- PLACEHOLDER_IMAGE_FILES_HEADER: add custom icon/illustration -->
+            <Image Source="files_header_placeholder.png" HeightRequest="56" HorizontalOptions="Start" IsVisible="False" />
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Text="Stored Files" Style="{StaticResource PageTitleLabel}" />
+                <Button Grid.Column="1" Text="Upload" Command="{Binding UploadCommand}" />
+            </Grid>
+        </VerticalStackLayout>
+
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Files}" SelectionMode="None" VerticalScrollBarVisibility="Always">
+            <CollectionView.EmptyView>
+                <Label Text="No files uploaded yet." Style="{StaticResource BodyLabel}" HorizontalOptions="Center" Margin="0,24,0,0" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:StudyFileItem">
+                    <Frame Style="{StaticResource AppCardStyle}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="{Binding DisplayName}" FontFamily="OpenSansSemibold" />
+                            <Label Text="{Binding FileType, StringFormat='Type: {0}'}" Style="{StaticResource BodyLabel}" />
+                            <Label Text="{Binding CreatedAt, StringFormat='Saved: {0:g}'}" Style="{StaticResource BodyLabel}" />
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                <Button
+                                    Text="Open"
+                                    Command="{Binding Source={x:Reference FilesPageRoot}, Path=BindingContext.OpenCommand}"
+                                    CommandParameter="{Binding .}" />
+                                <Button
+                                    Grid.Column="1"
+                                    Text="Delete"
+                                    Command="{Binding Source={x:Reference FilesPageRoot}, Path=BindingContext.DeleteCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Style="{StaticResource SecondaryButtonStyle}" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

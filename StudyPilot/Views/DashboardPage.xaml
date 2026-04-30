@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyPilot.Views.DashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:StudyPilot.Models"
+    xmlns:viewModels="clr-namespace:StudyPilot.ViewModels"
+    x:DataType="viewModels:DashboardViewModel"
+    Title="Dashboard">
+    <ScrollView VerticalScrollBarVisibility="Always">
+        <VerticalStackLayout Padding="16" Spacing="10">
+            <!-- PLACEHOLDER_IMAGE_DASHBOARD_BANNER: add a dashboard banner/hero image -->
+            <Image Source="dashboard_banner_placeholder.png" HeightRequest="96" Aspect="AspectFill" IsVisible="False" />
+            <Label Text="{Binding WelcomeText}" Style="{StaticResource PageTitleLabel}" />
+
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                <Frame Grid.Column="0" Style="{StaticResource AppCardStyle}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Pending" Style="{StaticResource BodyLabel}" />
+                        <Label Text="{Binding PendingTasksCount}" FontSize="22" TextColor="{StaticResource Primary}" FontFamily="OpenSansSemibold" />
+                    </VerticalStackLayout>
+                </Frame>
+                <Frame Grid.Column="1" Style="{StaticResource AppCardStyle}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Completed" Style="{StaticResource BodyLabel}" />
+                        <Label Text="{Binding CompletedTasksCount}" FontSize="22" TextColor="{StaticResource Success}" FontFamily="OpenSansSemibold" />
+                    </VerticalStackLayout>
+                </Frame>
+                <Frame Grid.Column="2" Style="{StaticResource AppCardStyle}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Classes" Style="{StaticResource BodyLabel}" />
+                        <Label Text="{Binding TodayClassesCount}" FontSize="22" TextColor="{StaticResource Warning}" FontFamily="OpenSansSemibold" />
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+
+            <Frame Style="{StaticResource AppCardStyle}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Today's Tasks" Style="{StaticResource SectionLabel}" />
+                    <CollectionView ItemsSource="{Binding TodayTasks}" SelectionMode="None">
+                        <CollectionView.EmptyView>
+                            <Label Text="No tasks due today." Style="{StaticResource BodyLabel}" />
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:TaskItem">
+                                <Grid Padding="0,4" ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Title}" FontFamily="OpenSansSemibold" TextColor="{StaticResource TextPrimary}" />
+                                        <Label Text="{Binding Deadline, StringFormat='Due {0:hh:mm tt}'}" Style="{StaticResource BodyLabel}" />
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1" Text="{Binding Priority}" TextColor="{StaticResource PrimaryDark}" VerticalOptions="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame Style="{StaticResource AppCardStyle}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Today's Classes" Style="{StaticResource SectionLabel}" />
+                    <CollectionView ItemsSource="{Binding TodayClasses}" SelectionMode="None">
+                        <CollectionView.EmptyView>
+                            <Label Text="No classes today." Style="{StaticResource BodyLabel}" />
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:ClassScheduleItem">
+                                <Grid Padding="0,4" ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Subject}" FontFamily="OpenSansSemibold" TextColor="{StaticResource TextPrimary}" />
+                                        <Label Text="{Binding Room}" Style="{StaticResource BodyLabel}" />
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1" Text="{Binding StartTime, StringFormat='{0:hh\\:mm}'}" Style="{StaticResource BodyLabel}" VerticalOptions="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="Logout" Command="{Binding LogoutCommand}" Style="{StaticResource SecondaryButtonStyle}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

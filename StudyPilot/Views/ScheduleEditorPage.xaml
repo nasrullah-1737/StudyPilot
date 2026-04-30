@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyPilot.Views.ScheduleEditorPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:StudyPilot.ViewModels"
+    x:DataType="viewModels:ScheduleEditorViewModel">
+    <ScrollView VerticalScrollBarVisibility="Always">
+        <VerticalStackLayout Padding="16" Spacing="10">
+            <!-- PLACEHOLDER_IMAGE_SCHEDULE_EDITOR_HEADER: add custom icon/illustration -->
+            <Image Source="schedule_editor_header_placeholder.png" HeightRequest="56" HorizontalOptions="Start" IsVisible="False" />
+            <Label Text="{Binding PageTitle}" Style="{StaticResource PageTitleLabel}" />
+
+            <Frame Style="{StaticResource AppCardStyle}">
+                <VerticalStackLayout Spacing="10">
+                    <Entry Placeholder="Subject" Text="{Binding Subject}" />
+                    <Entry Placeholder="Room" Text="{Binding Room}" />
+
+                    <Picker
+                        Title="Day of Week"
+                        ItemsSource="{Binding Days}"
+                        SelectedItem="{Binding SelectedDay}"
+                        ItemDisplayBinding="{Binding Name}" />
+
+                    <Label Text="Start Time" Style="{StaticResource BodyLabel}" />
+                    <TimePicker Time="{Binding StartTime}" />
+
+                    <Label Text="End Time" Style="{StaticResource BodyLabel}" />
+                    <TimePicker Time="{Binding EndTime}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="Save Class" Command="{Binding SaveCommand}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyPilot.Views.TimetablePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:StudyPilot.Models"
+    xmlns:viewModels="clr-namespace:StudyPilot.ViewModels"
+    x:Name="SchedulePageRoot"
+    x:DataType="viewModels:TimetableViewModel"
+    Title="Schedule">
+    <ScrollView VerticalScrollBarVisibility="Always">
+        <VerticalStackLayout Padding="16" Spacing="10">
+            <!-- PLACEHOLDER_IMAGE_SCHEDULE_HEADER: add custom icon/illustration -->
+            <Image Source="schedule_header_placeholder.png" HeightRequest="56" HorizontalOptions="Start" IsVisible="False" />
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Text="Weekly Timetable" Style="{StaticResource PageTitleLabel}" />
+                <Button Grid.Column="1" Text="Add" Command="{Binding AddCommand}" />
+            </Grid>
+
+            <Frame Style="{StaticResource AppCardStyle}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="{Binding TodayTitle}" Style="{StaticResource SectionLabel}" />
+                    <CollectionView ItemsSource="{Binding TodayClasses}" SelectionMode="None" VerticalScrollBarVisibility="Always">
+                        <CollectionView.EmptyView>
+                            <Label Text="No classes today." Style="{StaticResource BodyLabel}" />
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:ClassScheduleItem">
+                                <Grid Padding="0,4" ColumnDefinitions="*,Auto">
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Subject}" FontFamily="OpenSansSemibold" />
+                                        <Label Text="{Binding Room}" Style="{StaticResource BodyLabel}" />
+                                    </VerticalStackLayout>
+                                    <Label Grid.Column="1" Text="{Binding StartTime, StringFormat='{0:hh\\:mm}'}" Style="{StaticResource BodyLabel}" VerticalOptions="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="All Classes" Style="{StaticResource SectionLabel}" />
+            <CollectionView ItemsSource="{Binding WeeklyClasses}" SelectionMode="None" VerticalScrollBarVisibility="Always">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="viewModels:TimetableViewModel+ScheduleDisplayItem">
+                        <Frame Style="{StaticResource AppCardStyle}">
+                            <VerticalStackLayout Spacing="6">
+                                <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="6">
+                                    <Label Text="{Binding Subject}" FontFamily="OpenSansSemibold" />
+                                    <Button
+                                        Grid.Column="1"
+                                        Text="Edit"
+                                        Command="{Binding Source={x:Reference SchedulePageRoot}, Path=BindingContext.EditCommand}"
+                                        CommandParameter="{Binding .}"
+                                       Style="{StaticResource SecondaryButtonStyle}" BackgroundColor="Yellow" />
+                                    <Button
+                                        Grid.Column="2"
+                                        Text="Delete"
+                                        Command="{Binding Source={x:Reference SchedulePageRoot}, Path=BindingContext.DeleteCommand}"
+                                        CommandParameter="{Binding .}" BackgroundColor="Red"/>
+                                </Grid>
+                                <Label Text="{Binding DayName}" Style="{StaticResource BodyLabel}" />
+                                <Label Text="{Binding Room}" Style="{StaticResource BodyLabel}" />
+                                <Label Text="{Binding StartTime, StringFormat='{0:hh\\:mm}'}" Style="{StaticResource BodyLabel}" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

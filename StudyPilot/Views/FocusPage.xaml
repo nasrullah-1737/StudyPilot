@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyPilot.Views.FocusPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:StudyPilot.ViewModels"
+    x:DataType="viewModels:FocusViewModel"
+    Title="Focus">
+    <ScrollView VerticalScrollBarVisibility="Always">
+        <VerticalStackLayout Padding="16" Spacing="12" VerticalOptions="Center">
+            <!-- PLACEHOLDER_IMAGE_FOCUS_HEADER: add custom icon/illustration -->
+            <Image Source="focus_header_placeholder.png" HeightRequest="56" HorizontalOptions="Center" IsVisible="False" />
+            <Frame Style="{StaticResource AppCardStyle}">
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="Pomodoro Timer" Style="{StaticResource PageTitleLabel}" HorizontalOptions="Center" />
+                    <Label Text="{Binding SessionLabel}" Style="{StaticResource SectionLabel}" HorizontalOptions="Center" />
+                    <Label Text="{Binding TimerText}" FontFamily="OpenSansSemibold" FontSize="50" HorizontalOptions="Center" TextColor="{StaticResource PrimaryDark}" />
+                    <ProgressBar Progress="{Binding Progress}" HeightRequest="8" ProgressColor="{StaticResource Primary}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Text="{Binding StartPauseText}" Command="{Binding StartPauseCommand}" />
+                        <Button Grid.Column="1" Text="Reset" Command="{Binding ResetCommand}" Style="{StaticResource SecondaryButtonStyle}" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
