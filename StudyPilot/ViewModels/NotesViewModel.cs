@@ -10,6 +10,7 @@ namespace StudyPilot.ViewModels;
 public partial class NotesViewModel : BaseViewModel
 {
     private readonly INoteService _noteService;
+    private readonly IAlertService _alertService;
     private readonly List<NoteItem> _allNotes = [];
 
     [ObservableProperty]
@@ -18,9 +19,10 @@ public partial class NotesViewModel : BaseViewModel
     public ObservableCollection<string> Subjects { get; } = [];
     public ObservableCollection<NoteItem> Notes { get; } = [];
 
-    public NotesViewModel(INoteService noteService)
+    public NotesViewModel(INoteService noteService, IAlertService alertService)
     {
         _noteService = noteService;
+        _alertService = alertService;
         Title = "Notes";
     }
 
@@ -74,7 +76,7 @@ public partial class NotesViewModel : BaseViewModel
             return;
         }
 
-        var confirmed = await Shell.Current.DisplayAlert("Delete Note", "Delete this note?", "Delete", "Cancel");
+        var confirmed = await _alertService.ConfirmAsync("Delete Note", "Delete this note?", "Delete", "Cancel", AlertTone.Error);
         if (!confirmed)
         {
             return;

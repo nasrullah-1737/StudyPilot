@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="StudyPilot.Views.MorePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:StudyPilot.ViewModels"
+    x:DataType="viewModels:MoreViewModel"
+    Title="More">
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="16">
+            <!-- Profile header -->
+            <Border Style="{StaticResource AppCardStyle}" Margin="0">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                    <Border
+                        WidthRequest="64"
+                        HeightRequest="64"
+                        Background="{StaticResource PrimaryGradientBrush}"
+                        StrokeThickness="0"
+                        VerticalOptions="Center">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="32" />
+                        </Border.StrokeShape>
+                        <Label
+                            Text="{Binding UserInitial}"
+                            FontFamily="OpenSansSemibold"
+                            FontSize="24"
+                            TextColor="White"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center" />
+                    </Border>
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="4">
+                        <Label Text="{Binding UserName}" Style="{StaticResource SectionLabel}" FontSize="18" />
+                        <Label Text="{Binding UserEmail}" Style="{StaticResource BodyLabel}" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <Label Text="Account" Style="{StaticResource SectionLabel}" Margin="4,8,0,0" />
+
+            <Border Style="{StaticResource AppCardStyle}" Margin="0" Padding="0">
+                <VerticalStackLayout Spacing="0">
+                    <Grid Padding="16,14" ColumnDefinitions="Auto,*">
+                        <Label Text="📱" FontSize="18" VerticalOptions="Center" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <Label Text="StudyPilot" Style="{StaticResource SectionLabel}" FontSize="15" />
+                            <Label Text="{Binding AppVersion, StringFormat='Version {0}'}" Style="{StaticResource CaptionLabel}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                    <BoxView HeightRequest="1" Color="{StaticResource Border}" Margin="16,0" />
+                    <Button
+                        Text="Sign Out"
+                        Command="{Binding LogoutCommand}"
+                        Style="{StaticResource DangerButtonStyle}"
+                        Margin="16,12"
+                        HorizontalOptions="Fill" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

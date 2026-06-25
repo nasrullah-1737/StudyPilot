@@ -8,6 +8,7 @@ namespace StudyPilot.ViewModels;
 public partial class NoteEditorViewModel : BaseViewModel, IQueryAttributable
 {
     private readonly INoteService _noteService;
+    private readonly IAlertService _alertService;
     private int _noteId;
 
     [ObservableProperty]
@@ -25,9 +26,10 @@ public partial class NoteEditorViewModel : BaseViewModel, IQueryAttributable
     [ObservableProperty]
     private string? imagePath;
 
-    public NoteEditorViewModel(INoteService noteService)
+    public NoteEditorViewModel(INoteService noteService, IAlertService alertService)
     {
         _noteService = noteService;
+        _alertService = alertService;
         Title = "Note Editor";
     }
 
@@ -98,7 +100,7 @@ public partial class NoteEditorViewModel : BaseViewModel, IQueryAttributable
     {
         if (string.IsNullOrWhiteSpace(NoteTitle))
         {
-            await Shell.Current.DisplayAlert("Validation", "Title is required.", "OK");
+            await _alertService.ShowAsync("Validation", "Title is required.", tone: AlertTone.Warning);
             return;
         }
 

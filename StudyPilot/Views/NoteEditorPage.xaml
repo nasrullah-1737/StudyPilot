@@ -4,18 +4,31 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:StudyPilot.ViewModels"
-    x:DataType="viewModels:NoteEditorViewModel">
-    <ScrollView VerticalScrollBarVisibility="Always">
-        <VerticalStackLayout Padding="16" Spacing="10">
-            <!-- PLACEHOLDER_IMAGE_NOTE_EDITOR_HEADER: add custom icon/illustration -->
-            <Image Source="note_editor_header_placeholder.png" HeightRequest="56" HorizontalOptions="Start" IsVisible="False" />
+    x:DataType="viewModels:NoteEditorViewModel"
+    Title="{Binding PageTitle}">
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="16">
             <Label Text="{Binding PageTitle}" Style="{StaticResource PageTitleLabel}" />
 
-            <Frame Style="{StaticResource AppCardStyle}">
-                <VerticalStackLayout Spacing="10">
-                    <Entry Placeholder="Note title" Text="{Binding NoteTitle}" />
-                    <Entry Placeholder="Subject" Text="{Binding Subject}" />
-                    <Editor Placeholder="Write your note..." Text="{Binding Content}" MinimumHeightRequest="140" />
+            <Border Style="{StaticResource AppCardStyle}" Margin="0">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Title" Style="{StaticResource FormFieldLabel}" />
+                    <Border Padding="12,4" BackgroundColor="{StaticResource SurfaceMuted}" Stroke="{StaticResource Border}" StrokeThickness="1">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                        <Entry Placeholder="Note title" Text="{Binding NoteTitle}" BackgroundColor="Transparent" />
+                    </Border>
+
+                    <Label Text="Subject" Style="{StaticResource FormFieldLabel}" />
+                    <Border Padding="12,4" BackgroundColor="{StaticResource SurfaceMuted}" Stroke="{StaticResource Border}" StrokeThickness="1">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                        <Entry Placeholder="e.g. Mathematics" Text="{Binding Subject}" BackgroundColor="Transparent" />
+                    </Border>
+
+                    <Label Text="Content" Style="{StaticResource FormFieldLabel}" />
+                    <Border Padding="12" BackgroundColor="{StaticResource SurfaceMuted}" Stroke="{StaticResource Border}" StrokeThickness="1">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                        <Editor Placeholder="Write your note..." Text="{Binding Content}" MinimumHeightRequest="160" BackgroundColor="Transparent" />
+                    </Border>
 
                     <Image Source="{Binding ImagePath}" HeightRequest="180" Aspect="AspectFill">
                         <Image.Triggers>
@@ -24,12 +37,13 @@
                             </DataTrigger>
                         </Image.Triggers>
                     </Image>
-                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
-                        <Button Text="Pick Image" Command="{Binding PickImageCommand}" />
-                        <Button Grid.Column="1" Text="Remove Image" Command="{Binding RemoveImageCommand}" Style="{StaticResource SecondaryButtonStyle}" />
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Text="📷 Pick Image" Command="{Binding PickImageCommand}" Style="{StaticResource SecondaryButtonStyle}" />
+                        <Button Grid.Column="1" Text="Remove" Command="{Binding RemoveImageCommand}" Style="{StaticResource GhostButtonStyle}" />
                     </Grid>
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
             <Button Text="Save Note" Command="{Binding SaveCommand}" />
         </VerticalStackLayout>

@@ -8,6 +8,7 @@ namespace StudyPilot.ViewModels;
 public partial class ScheduleEditorViewModel : BaseViewModel, IQueryAttributable
 {
     private readonly IScheduleService _scheduleService;
+    private readonly IAlertService _alertService;
     private int _scheduleId;
 
     [ObservableProperty]
@@ -30,9 +31,10 @@ public partial class ScheduleEditorViewModel : BaseViewModel, IQueryAttributable
 
     public IReadOnlyList<DayOption> Days => DayOption.Days;
 
-    public ScheduleEditorViewModel(IScheduleService scheduleService)
+    public ScheduleEditorViewModel(IScheduleService scheduleService, IAlertService alertService)
     {
         _scheduleService = scheduleService;
+        _alertService = alertService;
         Title = "Class Editor";
     }
 
@@ -70,13 +72,13 @@ public partial class ScheduleEditorViewModel : BaseViewModel, IQueryAttributable
     {
         if (string.IsNullOrWhiteSpace(Subject))
         {
-            await Shell.Current.DisplayAlert("Validation", "Subject is required.", "OK");
+            await _alertService.ShowAsync("Validation", "Subject is required.", tone: AlertTone.Warning);
             return;
         }
 
         if (EndTime <= StartTime)
         {
-            await Shell.Current.DisplayAlert("Validation", "End time must be after start time.", "OK");
+            await _alertService.ShowAsync("Validation", "End time must be after start time.", tone: AlertTone.Warning);
             return;
         }
 

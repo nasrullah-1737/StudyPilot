@@ -6,38 +6,42 @@
     xmlns:views="clr-namespace:StudyPilot.Views"
     Shell.FlyoutBehavior="Disabled"
     Title="StudyPilot">
-    <!-- PLACEHOLDER_ICON_TABS: Replace dotnet_bot.png with your custom tab icons in Resources/Images -->
     <TabBar Route="main">
         <ShellContent
             Title="Home"
-            Icon="home.png"
+            Icon="tab_home"
             ContentTemplate="{DataTemplate views:DashboardPage}"
             Route="dashboard" />
         <ShellContent
             Title="Notes"
-            Icon="notes.png"
+            Icon="tab_notes"
             ContentTemplate="{DataTemplate views:NotesPage}"
             Route="notes" />
         <ShellContent
             Title="Tasks"
-            Icon="tasks.png"
+            Icon="tab_tasks"
             ContentTemplate="{DataTemplate views:TasksPage}"
             Route="tasks" />
         <ShellContent
             Title="Schedule"
-            Icon="schedule.png"
+            Icon="tab_schedule"
             ContentTemplate="{DataTemplate views:TimetablePage}"
             Route="schedule" />
         <ShellContent
             Title="Focus"
-            Icon="dotnet_bot.png"
+            Icon="tab_focus"
             ContentTemplate="{DataTemplate views:FocusPage}"
             Route="focus" />
         <ShellContent
             Title="Files"
-            Icon="dotnet_bot.png"
+            Icon="tab_files"
             ContentTemplate="{DataTemplate views:FilesPage}"
             Route="files" />
+        <ShellContent
+            Title="More"
+            Icon="tab_more"
+            ContentTemplate="{DataTemplate views:MorePage}"
+            Route="more" />
     </TabBar>
 
     <ShellContent

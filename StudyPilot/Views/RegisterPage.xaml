@@ -5,24 +5,59 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:StudyPilot.ViewModels"
     x:DataType="viewModels:RegisterViewModel"
-    Shell.NavBarIsVisible="False">
-    <ScrollView VerticalScrollBarVisibility="Always">
-        <VerticalStackLayout Padding="24,48" Spacing="16">
-            <!-- PLACEHOLDER_IMAGE_REGISTER_HEADER: optional onboarding image/icon -->
-            <Image Source="register_header_placeholder.png" HeightRequest="64" HorizontalOptions="Center" IsVisible="False" />
-            <Label Text="Create Account" Style="{StaticResource PageTitleLabel}" HorizontalOptions="Center" />
-
-            <Frame Style="{StaticResource AppCardStyle}">
-                <VerticalStackLayout Spacing="10">
-                    <Entry Placeholder="Full name" Text="{Binding Name}" />
-                    <Entry Placeholder="Email address" Text="{Binding Email}" Keyboard="Email" />
-                    <Entry Placeholder="Password" Text="{Binding Password}" IsPassword="True" />
-                    <Entry Placeholder="Confirm password" Text="{Binding ConfirmPassword}" IsPassword="True" />
-
-                    <Button Text="Register" Command="{Binding RegisterCommand}" />
-                    <Button Text="Back to Login" Command="{Binding BackToLoginCommand}" Style="{StaticResource SecondaryButtonStyle}" />
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource Background}">
+    <ScrollView>
+        <VerticalStackLayout Spacing="0">
+            <Border Padding="24,48,24,32" StrokeThickness="0">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="{StaticResource GradientStart}" Offset="0" />
+                        <GradientStop Color="{StaticResource GradientEnd}" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="0,0,28,28" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                    <Image Source="logo_studypilot.png" HeightRequest="72" WidthRequest="72" />
+                    <Label Text="Join StudyPilot" Style="{StaticResource HeroTitleLabel}" HorizontalOptions="Center" FontSize="26" />
+                    <Label Text="Start organizing your academic life" Style="{StaticResource HeroSubtitleLabel}" HorizontalOptions="Center" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
+
+            <VerticalStackLayout Padding="24,24,24,32" Spacing="16">
+                <Border Style="{StaticResource AppCardStyle}" Margin="0">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Full name" Style="{StaticResource FormFieldLabel}" />
+                        <Border Padding="12,4" BackgroundColor="{StaticResource SurfaceMuted}" Stroke="{StaticResource Border}" StrokeThickness="1">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                            <Entry Placeholder="Your name" Text="{Binding Name}" BackgroundColor="Transparent" />
+                        </Border>
+
+                        <Label Text="Email address" Style="{StaticResource FormFieldLabel}" />
+                        <Border Padding="12,4" BackgroundColor="{StaticResource SurfaceMuted}" Stroke="{StaticResource Border}" StrokeThickness="1">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                            <Entry Placeholder="you@university.edu" Text="{Binding Email}" Keyboard="Email" BackgroundColor="Transparent" />
+                        </Border>
+
+                        <Label Text="Password" Style="{StaticResource FormFieldLabel}" />
+                        <Border Padding="12,4" BackgroundColor="{StaticResource SurfaceMuted}" Stroke="{StaticResource Border}" StrokeThickness="1">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                            <Entry Placeholder="Create a password" Text="{Binding Password}" IsPassword="True" BackgroundColor="Transparent" />
+                        </Border>
+
+                        <Label Text="Confirm password" Style="{StaticResource FormFieldLabel}" />
+                        <Border Padding="12,4" BackgroundColor="{StaticResource SurfaceMuted}" Stroke="{StaticResource Border}" StrokeThickness="1">
+                            <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                            <Entry Placeholder="Repeat your password" Text="{Binding ConfirmPassword}" IsPassword="True" BackgroundColor="Transparent" />
+                        </Border>
+
+                        <Button Text="Create Account" Command="{Binding RegisterCommand}" Margin="0,16,0,8" />
+                        <Button Text="Already have an account? Sign in" Command="{Binding BackToLoginCommand}" Style="{StaticResource GhostButtonStyle}" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

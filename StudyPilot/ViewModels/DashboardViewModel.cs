@@ -12,9 +12,18 @@ public partial class DashboardViewModel : BaseViewModel
     private readonly IAuthService _authService;
     private readonly ITaskService _taskService;
     private readonly IScheduleService _scheduleService;
+    private readonly INoteService _noteService;
+    private readonly IFileService _fileService;
 
     [ObservableProperty]
     private string welcomeText = "Welcome";
+
+    private string _greetingSubtitle = "Ready to study smarter today?";
+    public string GreetingSubtitle
+    {
+        get => _greetingSubtitle;
+        set => SetProperty(ref _greetingSubtitle, value);
+    }
 
     [ObservableProperty]
     private int pendingTasksCount;
@@ -25,17 +34,35 @@ public partial class DashboardViewModel : BaseViewModel
     [ObservableProperty]
     private int todayClassesCount;
 
+    private int _notesCount;
+    public int NotesCount
+    {
+        get => _notesCount;
+        set => SetProperty(ref _notesCount, value);
+    }
+
+    private int _filesCount;
+    public int FilesCount
+    {
+        get => _filesCount;
+        set => SetProperty(ref _filesCount, value);
+    }
+
     public ObservableCollection<TaskItem> TodayTasks { get; } = [];
     public ObservableCollection<ClassScheduleItem> TodayClasses { get; } = [];
 
     public DashboardViewModel(
         IAuthService authService,
         ITaskService taskService,
-        IScheduleService scheduleService)
+        IScheduleService scheduleService,
+        INoteService noteService,
+        IFileService fileService)
     {
         _authService = authService;
         _taskService = taskService;
         _scheduleService = scheduleService;
+        _noteService = noteService;
+        _fileService = fileService;
         Title = "Dashboard";
     }
 
@@ -51,7 +78,8 @@ public partial class DashboardViewModel : BaseViewModel
         try
         {
             var user = await _authService.GetCurrentUserAsync();
-            WelcomeText = user is null ? "Welcome" : $"Welcome, {user.Name}";
+            WelcomeText = user is null ? "Welcome back" : $"Hello, {user.Name.Split(' ')[0]}";
+            GreetingSubtitle = GetTimeBasedGreeting();
 
             var tasks = await _taskService.GetAllAsync();
             PendingTasksCount = tasks.Count(x => !x.IsCompleted);
@@ -74,6 +102,12 @@ public partial class DashboardViewModel : BaseViewModel
             {
                 TodayClasses.Add(classItem);
             }
+
+            var notes = await _noteService.GetAllAsync();
+            NotesCount = notes.Count;
+
+            var files = await _fileService.GetAllAsync();
+            FilesCount = files.Count;
         }
         finally
         {
@@ -82,9 +116,29 @@ public partial class DashboardViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async Task LogoutAsync()
+    private async Task NavigateToNotesAsync() => await Shell.Current.GoToAsync(AppRoutes.NotesRoot);
+
+    [RelayCommand]
+    private async Task NavigateToTasksAsync() => await Shell.Current.GoToAsync(AppRoutes.TasksRoot);
+
+    [RelayCommand]
+    private async Task NavigateToScheduleAsync() => await Shell.Current.GoToAsync(AppRoutes.ScheduleRoot);
+
+    [RelayCommand]
+    private async Task NavigateToFocusAsync() => await Shell.Current.GoToAsync(AppRoutes.FocusRoot);
+
+    [RelayCommand]
+    private async Task NavigateToFilesAsync() => await Shell.Current.GoToAsync(AppRoutes.FilesRoot);
+
+    private static string GetTimeBasedGreeting()
     {
-        await _authService.LogoutAsync();
-        await Shell.Current.GoToAsync(AppRoutes.LoginRoot);
+        var hour = DateTime.Now.Hour;
+        return hour switch
+        {
+            < 12 => "Good morning — let's make today productive.",
+            < 17 => "Good afternoon — keep the momentum going.",
+            < 21 => "Good evening — time for a focused session.",
+            _ => "Burning the midnight oil? You've got this."
+        };
     }
 }

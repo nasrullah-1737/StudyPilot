@@ -10,6 +10,7 @@ namespace StudyPilot.ViewModels;
 public partial class TimetableViewModel : BaseViewModel
 {
     private readonly IScheduleService _scheduleService;
+    private readonly IAlertService _alertService;
     private readonly IReadOnlyDictionary<int, string> _dayMap = new Dictionary<int, string>
     {
         [1] = "Monday",
@@ -27,9 +28,10 @@ public partial class TimetableViewModel : BaseViewModel
     [ObservableProperty]
     private string todayTitle = "Today's Classes";
 
-    public TimetableViewModel(IScheduleService scheduleService)
+    public TimetableViewModel(IScheduleService scheduleService, IAlertService alertService)
     {
         _scheduleService = scheduleService;
+        _alertService = alertService;
         Title = "Timetable";
     }
 
@@ -88,7 +90,7 @@ public partial class TimetableViewModel : BaseViewModel
             return;
         }
 
-        var confirmed = await Shell.Current.DisplayAlert("Delete Class", "Delete this class slot?", "Delete", "Cancel");
+        var confirmed = await _alertService.ConfirmAsync("Delete Class", "Delete this class slot?", "Delete", "Cancel", AlertTone.Error);
         if (!confirmed)
         {
             return;

@@ -8,36 +8,44 @@
     x:Name="NotesPageRoot"
     x:DataType="viewModels:NotesViewModel"
     Title="Notes">
-    <Grid Padding="16" RowDefinitions="Auto,*" RowSpacing="10">
-        <VerticalStackLayout Grid.Row="0" Spacing="10">
-            <!-- PLACEHOLDER_IMAGE_NOTES_HEADER: add custom icon/illustration -->
-            <Image Source="notes_header_placeholder.png" HeightRequest="56" HorizontalOptions="Start" IsVisible="False" />
-            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                <Picker
-                    Title="Filter by subject"
-                    ItemsSource="{Binding Subjects}"
-                    SelectedItem="{Binding SelectedSubject}" />
-                <Button Grid.Column="1" Text="Add" Command="{Binding AddCommand}" />
+    <Grid Padding="16" RowDefinitions="Auto,*" RowSpacing="16">
+        <VerticalStackLayout Grid.Row="0" Spacing="12">
+            <Image Source="illust_notes.png" HeightRequest="64" Aspect="AspectFit" HorizontalOptions="Start" />
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Notes" Style="{StaticResource PageTitleLabel}" />
+                    <Label Text="Capture ideas and lecture notes" Style="{StaticResource BodyLabel}" />
+                </VerticalStackLayout>
+                <Button Grid.Column="1" Text="+ Add" Command="{Binding AddCommand}" Style="{StaticResource FabButtonStyle}" VerticalOptions="Center" />
             </Grid>
+            <Border Padding="4" BackgroundColor="{StaticResource Surface}" Stroke="{StaticResource Border}" StrokeThickness="1">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                <Picker Title="Filter by subject" ItemsSource="{Binding Subjects}" SelectedItem="{Binding SelectedSubject}" />
+            </Border>
         </VerticalStackLayout>
 
-        <CollectionView Grid.Row="1" ItemsSource="{Binding Notes}" SelectionMode="None" VerticalScrollBarVisibility="Always">
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Notes}" SelectionMode="None">
             <CollectionView.EmptyView>
-                <Label Text="No notes found." Style="{StaticResource BodyLabel}" HorizontalOptions="Center" Margin="0,24,0,0" />
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="12" Margin="0,40">
+                    <Image Source="empty_state.png" HeightRequest="100" WidthRequest="160" Opacity="0.75" />
+                    <Label Text="No notes yet. Start capturing your ideas." Style="{StaticResource EmptyStateLabel}" />
+                </VerticalStackLayout>
             </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:NoteItem">
-                    <Frame Style="{StaticResource AppCardStyle}">
-                        <VerticalStackLayout Spacing="8">
-                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="6">
-                                <Label Text="{Binding Title}" FontFamily="OpenSansSemibold" TextColor="{StaticResource TextPrimary}" />
-                                <Button Grid.Column="1" Text="Edit" Command="{Binding Source={x:Reference NotesPageRoot}, Path=BindingContext.EditCommand}" CommandParameter="{Binding .}" TextColor="Black"   Style="{StaticResource SecondaryButtonStyle}" BackgroundColor="Yellow" />
-                                <Button Grid.Column="2" Text="Delete" Command="{Binding Source={x:Reference NotesPageRoot}, Path=BindingContext.DeleteCommand}" CommandParameter="{Binding .}" BackgroundColor="Red" />
+                    <Border Style="{StaticResource AppCardStyle}">
+                        <VerticalStackLayout Spacing="10">
+                            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                                <Label Text="{Binding Title}" FontFamily="OpenSansSemibold" FontSize="16" TextColor="{StaticResource TextPrimary}" VerticalOptions="Center" />
+                                <Button Grid.Column="1" Text="Edit" Command="{Binding Source={x:Reference NotesPageRoot}, Path=BindingContext.EditCommand}" CommandParameter="{Binding .}" Style="{StaticResource GhostButtonStyle}" />
+                                <Button Grid.Column="2" Text="Delete" Command="{Binding Source={x:Reference NotesPageRoot}, Path=BindingContext.DeleteCommand}" CommandParameter="{Binding .}" Style="{StaticResource DangerButtonStyle}" />
                             </Grid>
-
-                            <Label Text="{Binding Subject}" Style="{StaticResource BodyLabel}" />
+                            <Border Padding="8,4" BackgroundColor="{StaticResource InfoLight}" StrokeThickness="0" HorizontalOptions="Start">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="16" /></Border.StrokeShape>
+                                <Label Text="{Binding Subject}" FontSize="12" TextColor="{StaticResource Info}" FontFamily="OpenSansSemibold" />
+                            </Border>
                             <Label Text="{Binding Content}" MaxLines="3" LineBreakMode="TailTruncation" Style="{StaticResource BodyLabel}" />
-                            <Image Source="{Binding ImagePath}" HeightRequest="120" Aspect="AspectFill">
+                            <Image Source="{Binding ImagePath}" HeightRequest="140" Aspect="AspectFill">
                                 <Image.Triggers>
                                     <DataTrigger TargetType="Image" Binding="{Binding ImagePath}" Value="{x:Null}">
                                         <Setter Property="IsVisible" Value="False" />
@@ -45,7 +53,7 @@
                                 </Image.Triggers>
                             </Image>
                         </VerticalStackLayout>
-                    </Frame>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

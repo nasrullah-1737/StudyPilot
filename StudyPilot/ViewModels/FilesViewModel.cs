@@ -8,12 +8,14 @@ namespace StudyPilot.ViewModels;
 public partial class FilesViewModel : BaseViewModel
 {
     private readonly IFileService _fileService;
+    private readonly IAlertService _alertService;
 
     public ObservableCollection<StudyFileItem> Files { get; } = [];
 
-    public FilesViewModel(IFileService fileService)
+    public FilesViewModel(IFileService fileService, IAlertService alertService)
     {
         _fileService = fileService;
+        _alertService = alertService;
         Title = "File Storage";
     }
 
@@ -56,7 +58,7 @@ public partial class FilesViewModel : BaseViewModel
     [RelayCommand]
     private async Task DeleteAsync(StudyFileItem fileItem)
     {
-        var confirmed = await Shell.Current.DisplayAlert("Delete File", "Delete this file from storage?", "Delete", "Cancel");
+        var confirmed = await _alertService.ConfirmAsync("Delete File", "Delete this file from storage?", "Delete", "Cancel", AlertTone.Error);
         if (!confirmed)
         {
             return;

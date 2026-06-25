@@ -6,11 +6,13 @@ namespace StudyPilot.Services;
 public class FileService : IFileService
 {
     private readonly IDatabaseService _databaseService;
+    private readonly IAlertService _alertService;
     private readonly string _storageRoot;
 
-    public FileService(IDatabaseService databaseService)
+    public FileService(IDatabaseService databaseService, IAlertService alertService)
     {
         _databaseService = databaseService;
+        _alertService = alertService;
         _storageRoot = Path.Combine(FileSystem.AppDataDirectory, "files");
         Directory.CreateDirectory(_storageRoot);
     }
@@ -39,7 +41,7 @@ public class FileService : IFileService
         var allowedExtensions = new[] { ".pdf", ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".webp" };
         if (!allowedExtensions.Contains(extension))
         {
-            await Shell.Current.DisplayAlert("Unsupported File", "Please select a PDF or image file.", "OK");
+            await _alertService.ShowAsync("Unsupported File", "Please select a PDF or image file.", tone: AlertTone.Warning);
             return null;
         }
 
@@ -66,7 +68,7 @@ public class FileService : IFileService
     {
         if (!File.Exists(fileItem.FilePath))
         {
-            await Shell.Current.DisplayAlert("File Missing", "File was not found on disk.", "OK");
+            await _alertService.ShowAsync("File Missing", "File was not found on disk.", tone: AlertTone.Error);
             return;
         }
 

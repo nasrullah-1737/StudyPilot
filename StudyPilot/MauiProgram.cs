@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Plugin.LocalNotification;
+using SQLitePCL;
 using StudyPilot.Services;
 using StudyPilot.Services.Interfaces;
 using StudyPilot.ViewModels;
@@ -12,10 +13,14 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
+        Batteries_V2.Init();
+
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+#if ANDROID || IOS
             .UseLocalNotification()
+#endif
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -43,6 +48,7 @@ public static class MauiProgram
         services.AddSingleton<IScheduleService, ScheduleService>();
         services.AddSingleton<IFileService, FileService>();
         services.AddSingleton<ISampleDataService, SampleDataService>();
+        services.AddSingleton<IAlertService, ThemedAlertService>();
     }
 
     private static void RegisterViewModels(IServiceCollection services)
@@ -58,6 +64,7 @@ public static class MauiProgram
         services.AddTransient<ScheduleEditorViewModel>();
         services.AddTransient<FocusViewModel>();
         services.AddTransient<FilesViewModel>();
+        services.AddTransient<MoreViewModel>();
     }
 
     private static void RegisterViews(IServiceCollection services)
@@ -74,5 +81,6 @@ public static class MauiProgram
         services.AddTransient<ScheduleEditorPage>();
         services.AddTransient<FocusPage>();
         services.AddTransient<FilesPage>();
+        services.AddTransient<MorePage>();
     }
 }

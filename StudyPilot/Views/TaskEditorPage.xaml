@@ -4,28 +4,37 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:StudyPilot.ViewModels"
-    x:DataType="viewModels:TaskEditorViewModel">
-    <ScrollView VerticalScrollBarVisibility="Always">
-        <VerticalStackLayout Padding="16" Spacing="10">
-            <!-- PLACEHOLDER_IMAGE_TASK_EDITOR_HEADER: add custom icon/illustration -->
-            <Image Source="task_editor_header_placeholder.png" HeightRequest="56" HorizontalOptions="Start" IsVisible="False" />
+    x:DataType="viewModels:TaskEditorViewModel"
+    Title="{Binding PageTitle}">
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="16">
+            <Image Source="illust_tasks.png" HeightRequest="56" Aspect="AspectFit" HorizontalOptions="Start" />
             <Label Text="{Binding PageTitle}" Style="{StaticResource PageTitleLabel}" />
 
-            <Frame Style="{StaticResource AppCardStyle}">
-                <VerticalStackLayout Spacing="10">
-                    <Entry Placeholder="Task title" Text="{Binding TaskTitle}" />
-                    <Editor Placeholder="Task description" Text="{Binding Description}" MinimumHeightRequest="120" />
+            <Border Style="{StaticResource AppCardStyle}" Margin="0">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Task title" Style="{StaticResource FormFieldLabel}" />
+                    <Border Padding="12,4" BackgroundColor="{StaticResource SurfaceMuted}" Stroke="{StaticResource Border}" StrokeThickness="1">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                        <Entry Placeholder="What needs to be done?" Text="{Binding TaskTitle}" BackgroundColor="Transparent" />
+                    </Border>
 
-                    <Label Text="Deadline Date" Style="{StaticResource BodyLabel}" />
+                    <Label Text="Description" Style="{StaticResource FormFieldLabel}" />
+                    <Border Padding="12" BackgroundColor="{StaticResource SurfaceMuted}" Stroke="{StaticResource Border}" StrokeThickness="1">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                        <Editor Placeholder="Add details..." Text="{Binding Description}" MinimumHeightRequest="120" BackgroundColor="Transparent" />
+                    </Border>
+
+                    <Label Text="Deadline date" Style="{StaticResource FormFieldLabel}" />
                     <DatePicker Date="{Binding DeadlineDate}" />
 
-                    <Label Text="Deadline Time" Style="{StaticResource BodyLabel}" />
+                    <Label Text="Deadline time" Style="{StaticResource FormFieldLabel}" />
                     <TimePicker Time="{Binding DeadlineTime}" />
 
-                    <Label Text="Priority" Style="{StaticResource BodyLabel}" />
+                    <Label Text="Priority" Style="{StaticResource FormFieldLabel}" />
                     <Picker ItemsSource="{Binding Priorities}" SelectedItem="{Binding SelectedPriority}" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
             <Button Text="Save Task" Command="{Binding SaveCommand}" />
         </VerticalStackLayout>

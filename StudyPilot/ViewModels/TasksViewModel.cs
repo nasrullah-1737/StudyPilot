@@ -10,6 +10,7 @@ namespace StudyPilot.ViewModels;
 public partial class TasksViewModel : BaseViewModel
 {
     private readonly ITaskService _taskService;
+    private readonly IAlertService _alertService;
     private readonly List<TaskItem> _allTasks = [];
 
     [ObservableProperty]
@@ -24,9 +25,10 @@ public partial class TasksViewModel : BaseViewModel
 
     public ObservableCollection<TaskItem> Tasks { get; } = [];
 
-    public TasksViewModel(ITaskService taskService)
+    public TasksViewModel(ITaskService taskService, IAlertService alertService)
     {
         _taskService = taskService;
+        _alertService = alertService;
         Title = "Assignments";
     }
 
@@ -67,7 +69,7 @@ public partial class TasksViewModel : BaseViewModel
             return;
         }
 
-        var confirmed = await Shell.Current.DisplayAlert("Delete Task", "Delete this task?", "Delete", "Cancel");
+        var confirmed = await _alertService.ConfirmAsync("Delete Task", "Delete this task?", "Delete", "Cancel", AlertTone.Error);
         if (!confirmed)
         {
             return;

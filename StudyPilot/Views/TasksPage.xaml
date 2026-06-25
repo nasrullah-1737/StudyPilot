@@ -8,55 +8,68 @@
     x:Name="TasksPageRoot"
     x:DataType="viewModels:TasksViewModel"
     Title="Tasks">
-    <Grid Padding="16" RowDefinitions="Auto,*" RowSpacing="10">
-        <VerticalStackLayout Grid.Row="0" Spacing="10">
-            <!-- PLACEHOLDER_IMAGE_TASKS_HEADER: add custom icon/illustration -->
-            <Image Source="tasks_header_placeholder.png" HeightRequest="56" HorizontalOptions="Start" IsVisible="False" />
-            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
-                <Picker
-                    Title="Filter"
-                    ItemsSource="{Binding Filters}"
-                    SelectedItem="{Binding SelectedFilter}" />
-                <Button Grid.Column="1" Text="Add" Command="{Binding AddCommand}" />
+    <Grid Padding="16" RowDefinitions="Auto,*" RowSpacing="16">
+        <VerticalStackLayout Grid.Row="0" Spacing="12">
+            <Image Source="illust_tasks.png" HeightRequest="64" Aspect="AspectFit" HorizontalOptions="Start" />
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Tasks" Style="{StaticResource PageTitleLabel}" />
+                    <Label Text="Stay on top of assignments" Style="{StaticResource BodyLabel}" />
+                </VerticalStackLayout>
+                <Button Grid.Column="1" Text="+ Add" Command="{Binding AddCommand}" Style="{StaticResource FabButtonStyle}" VerticalOptions="Center" />
             </Grid>
+            <Border Padding="4" BackgroundColor="{StaticResource Surface}" Stroke="{StaticResource Border}" StrokeThickness="1">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                <Picker Title="Filter tasks" ItemsSource="{Binding Filters}" SelectedItem="{Binding SelectedFilter}" />
+            </Border>
         </VerticalStackLayout>
 
-        <CollectionView Grid.Row="1" ItemsSource="{Binding Tasks}" SelectionMode="None" VerticalScrollBarVisibility="Always">
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Tasks}" SelectionMode="None">
             <CollectionView.EmptyView>
-                <Label Text="No tasks yet." Style="{StaticResource BodyLabel}" HorizontalOptions="Center" Margin="0,24,0,0" />
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="12" Margin="0,40">
+                    <Image Source="empty_state.png" HeightRequest="100" WidthRequest="160" Opacity="0.75" />
+                    <Label Text="No tasks yet. Tap + Add to create your first one." Style="{StaticResource EmptyStateLabel}" />
+                </VerticalStackLayout>
             </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:TaskItem">
-                    <Frame Style="{StaticResource AppCardStyle}">
-                        <VerticalStackLayout Spacing="8">
+                    <Border Style="{StaticResource AppCardStyle}">
+                        <VerticalStackLayout Spacing="12">
                             <Grid ColumnDefinitions="*,Auto">
-                                <VerticalStackLayout>
-                                    <Label Text="{Binding Title}" FontFamily="OpenSansSemibold" TextColor="{StaticResource TextPrimary}" />
-                                    <Label Text="{Binding Description}" Style="{StaticResource BodyLabel}" MaxLines="2" />
-                                    <Label Text="{Binding Deadline, StringFormat='Due: {0:dd MMM hh:mm tt}'}" Style="{StaticResource BodyLabel}" />
-                                    <Label Text="{Binding Priority, StringFormat='Priority: {0}'}" Style="{StaticResource BodyLabel}" />
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="{Binding Title}" FontFamily="OpenSansSemibold" FontSize="16" TextColor="{StaticResource TextPrimary}" />
+                                    <Label Text="{Binding Description}" Style="{StaticResource BodyLabel}" MaxLines="2" LineBreakMode="TailTruncation" />
                                 </VerticalStackLayout>
-                                <Label Grid.Column="1" Text="{Binding IsCompleted, StringFormat='Done: {0}'}" Style="{StaticResource BodyLabel}" VerticalOptions="Center" />
+                                <Border Grid.Column="1" Style="{StaticResource PriorityBadgeStyle}">
+                                    <Label Text="{Binding Priority}" FontSize="11" TextColor="{StaticResource Info}" FontFamily="OpenSansSemibold" />
+                                </Border>
                             </Grid>
+                            <Grid ColumnDefinitions="Auto,*">
+                                <Label Text="📅" FontSize="14" VerticalOptions="Center" />
+                                <Label Grid.Column="1" Text="{Binding Deadline, StringFormat='Due {0:ddd, dd MMM · hh:mm tt}'}" Style="{StaticResource CaptionLabel}" VerticalOptions="Center" />
+                            </Grid>
+                            <BoxView HeightRequest="1" Color="{StaticResource Border}" />
                             <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
                                 <Button
                                     Text="Toggle"
                                     Command="{Binding Source={x:Reference TasksPageRoot}, Path=BindingContext.ToggleCompletedCommand}"
-                                    CommandParameter="{Binding .}" />
+                                    CommandParameter="{Binding .}"
+                                    Style="{StaticResource SecondaryButtonStyle}" />
                                 <Button
                                     Grid.Column="1"
                                     Text="Edit"
                                     Command="{Binding Source={x:Reference TasksPageRoot}, Path=BindingContext.EditCommand}"
                                     CommandParameter="{Binding .}"
-                                    Style="{StaticResource SecondaryButtonStyle}" BackgroundColor="Yellow" />
+                                    Style="{StaticResource GhostButtonStyle}" />
                                 <Button
                                     Grid.Column="2"
                                     Text="Delete"
-                                    Command="{Binding Source={x:Reference TasksPageRoot}, Path=BindingContext.DeleteCommand}" BackgroundColor="Red"
-                                    CommandParameter="{Binding .}" />
+                                    Command="{Binding Source={x:Reference TasksPageRoot}, Path=BindingContext.DeleteCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Style="{StaticResource DangerButtonStyle}" />
                             </Grid>
                         </VerticalStackLayout>
-                    </Frame>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

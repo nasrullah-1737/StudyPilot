@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using StudyPilot.Services.Interfaces;
 
 namespace StudyPilot.ViewModels;
 
@@ -9,6 +10,7 @@ public partial class FocusViewModel : BaseViewModel
     private const int BreakSeconds = 5 * 60;
 
     private readonly IDispatcherTimer _timer;
+    private readonly IAlertService _alertService;
     private int _remainingSeconds = FocusSeconds;
     private int _totalSeconds = FocusSeconds;
     private bool _isBreak;
@@ -25,8 +27,9 @@ public partial class FocusViewModel : BaseViewModel
     [ObservableProperty]
     private double progress = 1;
 
-    public FocusViewModel()
+    public FocusViewModel(IAlertService alertService)
     {
+        _alertService = alertService;
         Title = "Focus Mode";
         _timer = Application.Current!.Dispatcher.CreateTimer();
         _timer.Interval = TimeSpan.FromSeconds(1);
@@ -76,7 +79,7 @@ public partial class FocusViewModel : BaseViewModel
         var message = _isBreak
             ? "Focus round complete. Time for a short break."
             : "Break complete. Back to focus.";
-        await Shell.Current.DisplayAlert("Pomodoro", message, "OK");
+        await _alertService.ShowAsync("Pomodoro", message, tone: AlertTone.Success);
     }
 
     private void UpdateUi()

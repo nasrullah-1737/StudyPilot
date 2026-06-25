@@ -9,6 +9,7 @@ public partial class LoginViewModel : BaseViewModel
 {
     private readonly IAuthService _authService;
     private readonly INotificationService _notificationService;
+    private readonly IAlertService _alertService;
 
     [ObservableProperty]
     private string email = string.Empty;
@@ -16,10 +17,11 @@ public partial class LoginViewModel : BaseViewModel
     [ObservableProperty]
     private string password = string.Empty;
 
-    public LoginViewModel(IAuthService authService, INotificationService notificationService)
+    public LoginViewModel(IAuthService authService, INotificationService notificationService, IAlertService alertService)
     {
         _authService = authService;
         _notificationService = notificationService;
+        _alertService = alertService;
         Title = "Login";
     }
 
@@ -33,7 +35,7 @@ public partial class LoginViewModel : BaseViewModel
 
         if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
         {
-            await Shell.Current.DisplayAlert("Validation", "Email and password are required.", "OK");
+            await _alertService.ShowAsync("Validation", "Email and password are required.", tone: AlertTone.Warning);
             return;
         }
 
@@ -43,7 +45,7 @@ public partial class LoginViewModel : BaseViewModel
             var result = await _authService.LoginAsync(Email, Password);
             if (!result.Success)
             {
-                await Shell.Current.DisplayAlert("Login Failed", result.Message, "OK");
+                await _alertService.ShowAsync("Login Failed", result.Message, tone: AlertTone.Error);
                 return;
             }
 

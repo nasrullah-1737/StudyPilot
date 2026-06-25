@@ -8,6 +8,7 @@ namespace StudyPilot.ViewModels;
 public partial class RegisterViewModel : BaseViewModel
 {
     private readonly IAuthService _authService;
+    private readonly IAlertService _alertService;
 
     [ObservableProperty]
     private string name = string.Empty;
@@ -21,9 +22,10 @@ public partial class RegisterViewModel : BaseViewModel
     [ObservableProperty]
     private string confirmPassword = string.Empty;
 
-    public RegisterViewModel(IAuthService authService)
+    public RegisterViewModel(IAuthService authService, IAlertService alertService)
     {
         _authService = authService;
+        _alertService = alertService;
         Title = "Register";
     }
 
@@ -37,13 +39,13 @@ public partial class RegisterViewModel : BaseViewModel
 
         if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
         {
-            await Shell.Current.DisplayAlert("Validation", "All fields are required.", "OK");
+            await _alertService.ShowAsync("Validation", "All fields are required.", tone: AlertTone.Warning);
             return;
         }
 
         if (Password != ConfirmPassword)
         {
-            await Shell.Current.DisplayAlert("Validation", "Passwords do not match.", "OK");
+            await _alertService.ShowAsync("Validation", "Passwords do not match.", tone: AlertTone.Warning);
             return;
         }
 
@@ -53,11 +55,11 @@ public partial class RegisterViewModel : BaseViewModel
             var result = await _authService.RegisterAsync(Name, Email, Password);
             if (!result.Success)
             {
-                await Shell.Current.DisplayAlert("Registration Failed", result.Message, "OK");
+                await _alertService.ShowAsync("Registration Failed", result.Message, tone: AlertTone.Error);
                 return;
             }
 
-            await Shell.Current.DisplayAlert("Success", "Account created successfully.", "OK");
+            await _alertService.ShowAsync("Success", "Account created successfully.", tone: AlertTone.Success);
             await Shell.Current.GoToAsync(AppRoutes.LoginRoot);
         }
         finally

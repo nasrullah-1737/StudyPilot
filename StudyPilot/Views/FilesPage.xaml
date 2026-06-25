@@ -8,41 +8,49 @@
     x:Name="FilesPageRoot"
     x:DataType="viewModels:FilesViewModel"
     Title="Files">
-    <Grid Padding="16" RowDefinitions="Auto,*" RowSpacing="10">
-        <VerticalStackLayout Grid.Row="0" Spacing="10">
-            <!-- PLACEHOLDER_IMAGE_FILES_HEADER: add custom icon/illustration -->
-            <Image Source="files_header_placeholder.png" HeightRequest="56" HorizontalOptions="Start" IsVisible="False" />
+    <Grid Padding="16" RowDefinitions="Auto,*" RowSpacing="16">
+        <VerticalStackLayout Grid.Row="0" Spacing="12">
+            <Image Source="illust_files.png" HeightRequest="64" Aspect="AspectFit" HorizontalOptions="Start" />
             <Grid ColumnDefinitions="*,Auto">
-                <Label Text="Stored Files" Style="{StaticResource PageTitleLabel}" />
-                <Button Grid.Column="1" Text="Upload" Command="{Binding UploadCommand}" />
+                <VerticalStackLayout VerticalOptions="Center">
+                    <Label Text="Study Files" Style="{StaticResource PageTitleLabel}" />
+                    <Label Text="PDFs, images, and study materials" Style="{StaticResource BodyLabel}" />
+                </VerticalStackLayout>
+                <Button Grid.Column="1" Text="Upload" Command="{Binding UploadCommand}" Style="{StaticResource FabButtonStyle}" VerticalOptions="Center" />
             </Grid>
         </VerticalStackLayout>
 
-        <CollectionView Grid.Row="1" ItemsSource="{Binding Files}" SelectionMode="None" VerticalScrollBarVisibility="Always">
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Files}" SelectionMode="None">
             <CollectionView.EmptyView>
-                <Label Text="No files uploaded yet." Style="{StaticResource BodyLabel}" HorizontalOptions="Center" Margin="0,24,0,0" />
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="12" Margin="0,40">
+                    <Image Source="empty_state.png" HeightRequest="100" WidthRequest="160" Opacity="0.75" />
+                    <Label Text="No files uploaded yet. Tap Upload to add study materials." Style="{StaticResource EmptyStateLabel}" />
+                </VerticalStackLayout>
             </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:StudyFileItem">
-                    <Frame Style="{StaticResource AppCardStyle}">
-                        <VerticalStackLayout Spacing="8">
-                            <Label Text="{Binding DisplayName}" FontFamily="OpenSansSemibold" />
-                            <Label Text="{Binding FileType, StringFormat='Type: {0}'}" Style="{StaticResource BodyLabel}" />
-                            <Label Text="{Binding CreatedAt, StringFormat='Saved: {0:g}'}" Style="{StaticResource BodyLabel}" />
-                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
-                                <Button
-                                    Text="Open"
-                                    Command="{Binding Source={x:Reference FilesPageRoot}, Path=BindingContext.OpenCommand}"
-                                    CommandParameter="{Binding .}" />
-                                <Button
-                                    Grid.Column="1"
-                                    Text="Delete"
-                                    Command="{Binding Source={x:Reference FilesPageRoot}, Path=BindingContext.DeleteCommand}"
-                                    CommandParameter="{Binding .}"
-                                    Style="{StaticResource SecondaryButtonStyle}" />
-                            </Grid>
-                        </VerticalStackLayout>
-                    </Frame>
+                    <Border Style="{StaticResource AppCardStyle}">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                            <Border
+                                WidthRequest="48"
+                                HeightRequest="48"
+                                BackgroundColor="{StaticResource InfoLight}"
+                                StrokeThickness="0"
+                                VerticalOptions="Center">
+                                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                                <Label Text="📄" FontSize="22" HorizontalOptions="Center" VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                <Label Text="{Binding DisplayName}" FontFamily="OpenSansSemibold" FontSize="15" LineBreakMode="TailTruncation" />
+                                <Label Text="{Binding FileType, StringFormat='{0} file'}" Style="{StaticResource CaptionLabel}" />
+                                <Label Text="{Binding CreatedAt, StringFormat='Saved {0:dd MMM yyyy}'}" Style="{StaticResource CaptionLabel}" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="2" Spacing="6" VerticalOptions="Center">
+                                <Button Text="Open" Command="{Binding Source={x:Reference FilesPageRoot}, Path=BindingContext.OpenCommand}" CommandParameter="{Binding .}" Style="{StaticResource GhostButtonStyle}" Padding="8,4" />
+                                <Button Text="Delete" Command="{Binding Source={x:Reference FilesPageRoot}, Path=BindingContext.DeleteCommand}" CommandParameter="{Binding .}" Style="{StaticResource DangerButtonStyle}" Padding="8,4" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

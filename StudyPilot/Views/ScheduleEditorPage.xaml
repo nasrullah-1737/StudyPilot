@@ -4,31 +4,37 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:StudyPilot.ViewModels"
-    x:DataType="viewModels:ScheduleEditorViewModel">
-    <ScrollView VerticalScrollBarVisibility="Always">
-        <VerticalStackLayout Padding="16" Spacing="10">
-            <!-- PLACEHOLDER_IMAGE_SCHEDULE_EDITOR_HEADER: add custom icon/illustration -->
-            <Image Source="schedule_editor_header_placeholder.png" HeightRequest="56" HorizontalOptions="Start" IsVisible="False" />
+    x:DataType="viewModels:ScheduleEditorViewModel"
+    Title="{Binding PageTitle}">
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="16">
+            <Image Source="illust_schedule.png" HeightRequest="56" Aspect="AspectFit" HorizontalOptions="Start" />
             <Label Text="{Binding PageTitle}" Style="{StaticResource PageTitleLabel}" />
 
-            <Frame Style="{StaticResource AppCardStyle}">
-                <VerticalStackLayout Spacing="10">
-                    <Entry Placeholder="Subject" Text="{Binding Subject}" />
-                    <Entry Placeholder="Room" Text="{Binding Room}" />
+            <Border Style="{StaticResource AppCardStyle}" Margin="0">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Subject" Style="{StaticResource FormFieldLabel}" />
+                    <Border Padding="12,4" BackgroundColor="{StaticResource SurfaceMuted}" Stroke="{StaticResource Border}" StrokeThickness="1">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                        <Entry Placeholder="e.g. Computer Science" Text="{Binding Subject}" BackgroundColor="Transparent" />
+                    </Border>
 
-                    <Picker
-                        Title="Day of Week"
-                        ItemsSource="{Binding Days}"
-                        SelectedItem="{Binding SelectedDay}"
-                        ItemDisplayBinding="{Binding Name}" />
+                    <Label Text="Room" Style="{StaticResource FormFieldLabel}" />
+                    <Border Padding="12,4" BackgroundColor="{StaticResource SurfaceMuted}" Stroke="{StaticResource Border}" StrokeThickness="1">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                        <Entry Placeholder="e.g. B-204" Text="{Binding Room}" BackgroundColor="Transparent" />
+                    </Border>
 
-                    <Label Text="Start Time" Style="{StaticResource BodyLabel}" />
+                    <Label Text="Day of week" Style="{StaticResource FormFieldLabel}" />
+                    <Picker ItemsSource="{Binding Days}" SelectedItem="{Binding SelectedDay}" ItemDisplayBinding="{Binding Name}" />
+
+                    <Label Text="Start time" Style="{StaticResource FormFieldLabel}" />
                     <TimePicker Time="{Binding StartTime}" />
 
-                    <Label Text="End Time" Style="{StaticResource BodyLabel}" />
+                    <Label Text="End time" Style="{StaticResource FormFieldLabel}" />
                     <TimePicker Time="{Binding EndTime}" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
             <Button Text="Save Class" Command="{Binding SaveCommand}" />
         </VerticalStackLayout>

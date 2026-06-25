@@ -8,6 +8,7 @@ namespace StudyPilot.ViewModels;
 public partial class TaskEditorViewModel : BaseViewModel, IQueryAttributable
 {
     private readonly ITaskService _taskService;
+    private readonly IAlertService _alertService;
     private int _taskId;
 
     [ObservableProperty]
@@ -35,9 +36,10 @@ public partial class TaskEditorViewModel : BaseViewModel, IQueryAttributable
         TaskPriority.High
     ];
 
-    public TaskEditorViewModel(ITaskService taskService)
+    public TaskEditorViewModel(ITaskService taskService, IAlertService alertService)
     {
         _taskService = taskService;
+        _alertService = alertService;
         Title = "Task Editor";
     }
 
@@ -75,7 +77,7 @@ public partial class TaskEditorViewModel : BaseViewModel, IQueryAttributable
     {
         if (string.IsNullOrWhiteSpace(TaskTitle))
         {
-            await Shell.Current.DisplayAlert("Validation", "Task title is required.", "OK");
+            await _alertService.ShowAsync("Validation", "Task title is required.", tone: AlertTone.Warning);
             return;
         }
 
